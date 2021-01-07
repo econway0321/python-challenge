@@ -1,0 +1,81 @@
+#Modules
+import os
+import csv
+
+#Set path for file
+csvpath = os.path.join("Resources", "election_data.csv")
+
+#Open csv file
+with open(csvpath) as csvfile:
+	csvreader=csv.reader(csvfile,delimiter=',') #iterate through
+
+	print(csvreader)
+
+	csv_header= next(csvreader)
+	print(f'CSV Header:{csv_header}')
+
+	first_row = next(csvreader)
+
+	count = 1
+	countX = 0
+	name_list = []
+	name_total = []
+	voter_dict = {}
+	voter_percentage = {}
+	winner_name = None
+	winner_votes = 0
+
+
+	#example_dict = {
+		#"John Smith": 15,
+
+	#}
+
+
+	for x in csvreader:
+		count += 1
+		
+		if x[2] not in voter_dict:
+			voter_dict[x[2]] = 1
+		else: 
+			voter_dict[x[2]] = voter_dict[x[2]] + 1
+
+	
+	for key in voter_dict:
+		voter_percentage[key] = voter_dict[key]/count
+
+	
+		if voter_dict[key] > winner_votes:
+			winner_votes = voter_dict[key]
+			winner_name = key
+
+			#name_list.append(x[2])
+		
+		#name_total=name_list.count(x[2])
+			
+
+			#percent = round(int(row[2]) / int(row[2]), 2)
+                #voter_percentage.append(percent)
+        	#name_list[0]=(x[2]) / count	
+
+
+    
+	print (f'The Winner Is: {winner_name} with {winner_votes}')
+	print(voter_percentage)
+	print('Total Votes:' , count)
+	print(voter_dict)
+	#print(name_list) #output Correy, Khan, Li, O'Tooley
+	#print(name_total)
+
+
+	#for x in name_list:
+	#    print(x, sep= '\n')
+	
+	#for ele in name_list:
+	#	if (ele == x):
+	#		count += 1
+	#print(countX)    
+
+
+
+
