@@ -1,0 +1,66 @@
+#Modules
+import os
+import csv
+
+#Set path for file
+csvpath = os.path.join("Resources", "budget_data.csv")
+
+#Open csv file
+with open(csvpath) as csvfile:
+	csvreader=csv.reader(csvfile,delimiter=',') #iterate through
+
+	print(csvreader)
+
+	csv_header= next(csvreader)
+	print(f'CSV Header:{csv_header}')
+
+	first_row = next(csvreader)
+
+	count = 1
+	total_amt = int(first_row[1])
+	prev_net = int(first_row[1])
+	pl_amt = int(first_row[1])
+	greatest_increase = ['', 0]
+	greatest_decrease = ['', 99999999999999999999]
+
+	net_change_list = []
+
+	for x in csvreader:
+		count += 1
+		total_amt += int(x[1])
+		net_change = int(x[1]) - prev_net
+		prev_net = int(x[1])
+		net_change_list += [net_change]
+
+		if int(x[1]) > int(greatest_increase[1]):
+			greatest_increase[0]= x[0]
+			greatest_increase[1]= int(x[1])
+
+		if int(x[1]) < int(greatest_decrease[1]):
+			greatest_decrease[0] = x[0]
+			greatest_decrease[1] = int(x[1])
+
+	print ('Total Months:', count)
+	print ('Total:', total_amt)
+	print ('Average Change:', sum(net_change_list) / len(net_change_list))
+	print ('Greatest Increase in Profits', greatest_increase)
+	print ('Greatest Decrease in Profits', greatest_decrease)
+
+# Specify the file to write to
+output_path = os.path.join("analysis", "new.csv")
+
+# Open the file using "write" mode. Specify the variable to hold the contents
+with open(output_path, 'w', newline='') as csvfile:
+
+    # Initialize csv.writer
+    csvwriter = csv.writer(csvfile, delimiter=',')
+
+    # Write the rows
+    csvwriter.writerow(['Total Months:', count])
+    csvwriter.writerow(['Total:', total_amt])
+    csvwriter.writerow(['Average Change:', sum(net_change_list) / len(net_change_list)])
+    csvwriter.writerow(['Greatest Increase in Profits', greatest_increase])
+    csvwriter.writerow(['Greatest Decrease in Profits', greatest_decrease])
+	
+
+
